@@ -1,0 +1,44 @@
+﻿<Window x:Class="MathLearn.MainWindow" Loaded="MainWindow_Load"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MathLearn"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="550">
+    <Grid>
+
+        <RadioButton x:Name="evalRadioButton" Content="Расчет" HorizontalAlignment="Left" Margin="56,41,0,0" VerticalAlignment="Top" Checked="evalRadioButton_Checked"/>
+        <RadioButton x:Name="equotRadioButton" Content="Решение уравнения" HorizontalAlignment="Left" Margin="151,41,0,0" VerticalAlignment="Top" Checked="equotRadioButton_Checked"/>
+        <Label x:Name="label3" Content="Выберите режим работы:" HorizontalAlignment="Left" Margin="56,15,0,0" VerticalAlignment="Top"/>
+        <Border  BorderBrush="Black" BorderThickness="1" Margin="30,80,45,240">
+            <WrapPanel Name ="evalPanel"  Margin="0,0,0,0" VerticalAlignment="Top" Height="148" >
+
+                <Label x:Name="label4" Content="Вычисление выражения:" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Width="441"/>
+
+                <Label x:Name="label" Content="Инфиксная запись" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="10, 0 ,0 ,0"/>
+                <Label x:Name="label1" Content="Постфиксная запись" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="150" Margin="15,0,0,0"/>
+                <Label x:Name="label2" Content="Результат" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center"  Width="70" Margin="25,0,0,0"/>
+                <TextBox x:Name="infixTextBox" HorizontalAlignment="Left" Height="47" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="10,0,0,0"/>
+                <TextBox x:Name="postfixTextBox" HorizontalAlignment="Left" Height="46" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="15,0,0,0"/>
+                <TextBox x:Name="resultTextBox" HorizontalAlignment="Left" Height="45" TextWrapping="Wrap" VerticalAlignment="Top" Width="104" Margin="25,0,0,0"/>
+                <Button x:Name="evalButton" Content="Рассчитать" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="72" Click="testButton_Click" Margin="10 ,20,0,0" RenderTransformOrigin="0.819,0.45"/>
+            </WrapPanel>
+        </Border>
+        <Border  BorderBrush="Black" BorderThickness="1" Margin="30,260,45,20">
+            <WrapPanel Name="equotPanel" Margin="0,0,0,0">
+                <Label x:Name="label7" Margin="0,5,0,0" Content="Решение уравнения:" HorizontalContentAlignment="Center" Width="465"/>
+                <Label x:Name="label5" Content="Уравнение:" VerticalContentAlignment="Center" Width="85" Margin="0,10,0,0"/>
+                <TextBox x:Name="equotTextBox" Height="25"  TextWrapping="Wrap" Margin="0,10,0,0" VerticalContentAlignment="Center" Text="TextBox" Width="370"/>
+                <Label x:Name="label6" Content="Левая часть:" VerticalContentAlignment="Center" Width="85" Margin="0,10,0,0"/>
+                <TextBox x:Name="leftTextBox" Height="25"   TextWrapping="Wrap" Text="TextBox" Margin="0,10,0,0" VerticalContentAlignment="Center" Width="370"/>
+                <Label x:Name="label8" VerticalContentAlignment="Center" Content="Правая часть:" Width="85" Margin="0,10,0,0"/>
+                <TextBox x:Name="rightTextBox" Height="25"   TextWrapping="Wrap" Text="TextBox" Margin="0,10,0,0" VerticalContentAlignment="Center" Width="370"/>
+                <Label x:Name="label9" Content="Корень: " VerticalContentAlignment="Center" Width="55" Margin="0,10,0,0"/>
+                <Label x:Name="label10" Content="-" VerticalContentAlignment="Center" Width="85" Margin="0,10,0,0"/>
+                <Button x:Name="button" Content="Решить уравнение" Width="110" Height="25" Margin="200,10,0,0" Click="button_Click"/>
+            </WrapPanel>
+        </Border>
+
+    </Grid>
+</Window>

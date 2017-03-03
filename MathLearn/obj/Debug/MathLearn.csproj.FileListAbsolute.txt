@@ -1,0 +1,14 @@
+D:\Учеба\УИРС\MathLearn\MathLearn\bin\Debug\MathLearn.exe.config
+D:\Учеба\УИРС\MathLearn\MathLearn\bin\Debug\MathLearn.exe
+D:\Учеба\УИРС\MathLearn\MathLearn\bin\Debug\MathLearn.pdb
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn.csprojResolveAssemblyReference.cache
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MainWindow.g.cs
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\App.g.cs
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn_MarkupCompile.cache
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn_MarkupCompile.lref
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MainWindow.baml
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn.g.resources
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn.Properties.Resources.resources
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn.csproj.GenerateResource.Cache
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn.exe
+D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn.pdb
