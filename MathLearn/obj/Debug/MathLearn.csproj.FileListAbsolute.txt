@@ -12,3 +12,17 @@ D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn.Properties.Resour
 D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn.csproj.GenerateResource.Cache
 D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn.exe
 D:\Учеба\УИРС\MathLearn\MathLearn\obj\Debug\MathLearn.pdb
+D:\Git\UIRS\MathLearn\bin\Debug\MathLearn.exe.config
+D:\Git\UIRS\MathLearn\obj\Debug\MathLearn.exe
+D:\Git\UIRS\MathLearn\obj\Debug\MathLearn.pdb
+D:\Git\UIRS\MathLearn\bin\Debug\MathLearn.exe
+D:\Git\UIRS\MathLearn\bin\Debug\MathLearn.pdb
+D:\Git\UIRS\MathLearn\obj\Debug\MathLearn.csprojResolveAssemblyReference.cache
+D:\Git\UIRS\MathLearn\obj\Debug\MainWindow.g.cs
+D:\Git\UIRS\MathLearn\obj\Debug\App.g.cs
+D:\Git\UIRS\MathLearn\obj\Debug\MathLearn_MarkupCompile.cache
+D:\Git\UIRS\MathLearn\obj\Debug\MathLearn_MarkupCompile.lref
+D:\Git\UIRS\MathLearn\obj\Debug\MainWindow.baml
+D:\Git\UIRS\MathLearn\obj\Debug\MathLearn.g.resources
+D:\Git\UIRS\MathLearn\obj\Debug\MathLearn.Properties.Resources.resources
+D:\Git\UIRS\MathLearn\obj\Debug\MathLearn.csproj.GenerateResource.Cache

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +13,13 @@ namespace MathLearn
 {
     static class Postfixer
     {
+        public enum ElementKind
+        {
+            Constant = 1,
+            Variable,
+            Operator,
+            Function
+        }
         private static List<string> _functionList = new List<string>
         {
             "sin",
@@ -31,14 +39,23 @@ namespace MathLearn
         {
             var output = ConvertRPN(input); //Преобразование к ОПЗ
             //output = OptimizeExpression(output); //Оптимизация выражения
-            double result = Evaluate(output); //Вычисление
+            double result = Evaluate(output);
             return result;
         }
+
+        public static double SolveEquotation(IEnumerable<string> input)
+        {
+            return 0;
+        }
+
+
         /// <summary>
         /// Метод для конвертации в ОПЗ.
         /// </summary>
         /// <param name="input">Выражение, записаннное в инфиксной нотации</param>
         /// <returns>Выражение, преобразованное к ОПЗ. Лексемы и операторы разделены пробелами</returns>
+
+        // public static IDictionary<string, ElementKind> ConvertRPN()
         public static List<string> ConvertRPN(string input)
         {
             input = input.Replace(" ", "");
@@ -132,7 +149,7 @@ namespace MathLearn
             return output;
         }
 
-        private static string OptimizeExpression(string input)
+        private static string OptimizeExpression(IDictionary<string, ElementKind> input)
         {
             string output = "";
             return output;
@@ -209,7 +226,7 @@ namespace MathLearn
                     lexemStack.Push(result.ToString()); //отправить результат операции в стек
                 }
             }
-            return Math.Round(double.Parse(lexemStack.Peek()),3);
+            return Math.Round(double.Parse(lexemStack.Peek()), 3);
         }
 
         /// <summary>

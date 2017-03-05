@@ -29,13 +29,13 @@ namespace MathLearn
         {
             postfixTextBox.Text = "";
             string input = infixTextBox.Text;
-            List<string> output = Postfixer.ConvertRPN(input);
+            //List<string> output = Postfixer.ConvertRPN(input);
             double result = Postfixer.CalculateExpression(input);
-            foreach (string t in output)
-            {
-                postfixTextBox.Text += t + " ";
-            }
-            resultTextBox.Text = result.ToString();
+            //foreach (string t in output)
+            //{
+            //    postfixTextBox.Text += t + " ";
+            //}
+            //resultTextBox.Text = result.ToString();
         }
 
         private void equotRadioButton_Checked(object sender, RoutedEventArgs e)
@@ -55,12 +55,12 @@ namespace MathLearn
             leftTextBox.Text = "";
             rightTextBox.Text = "";
             string[] parts = equotTextBox.Text.Split('=');
-            List<string> left = Postfixer.ConvertRPN(parts[0]);
+            /*List<string> left = Postfixer.ConvertRPN(parts[0]);
             List<string> right = Postfixer.ConvertRPN(parts[1]);
             foreach (var s in right)
                 rightTextBox.Text += s + " ";
             foreach (var s in left)
-                leftTextBox.Text += s + " ";
+                leftTextBox.Text += s + " ";*/
         }
 
         private void MainWindow_Load(object sender, RoutedEventArgs e)

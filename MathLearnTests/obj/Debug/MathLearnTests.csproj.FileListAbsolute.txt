@@ -1,0 +1,7 @@
+D:\Git\UIRS\MathLearnTests\bin\Debug\MathLearnTests.dll
+D:\Git\UIRS\MathLearnTests\bin\Debug\MathLearnTests.pdb
+D:\Git\UIRS\MathLearnTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Git\UIRS\MathLearnTests\bin\Debug\ru\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
+D:\Git\UIRS\MathLearnTests\obj\Debug\MathLearnTests.csprojResolveAssemblyReference.cache
+D:\Git\UIRS\MathLearnTests\obj\Debug\MathLearnTests.dll
+D:\Git\UIRS\MathLearnTests\obj\Debug\MathLearnTests.pdb
