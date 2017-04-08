@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -11,14 +12,15 @@ using System.Windows;
 
 namespace MathLearn
 {
-    static class Postfixer
+    public static class Postfixer
     {
         public enum ElementKind
         {
             Constant = 1,
             Variable,
             Operator,
-            Function
+            Function,
+            VariableExpression
         }
         private static List<string> _functionList = new List<string>
         {
@@ -28,22 +30,22 @@ namespace MathLearn
             "sqrt",
             "asin",
             "acos",
-            "atan"
+            "atan",
+            "^"
         };
         /// <summary>
         /// Основной метод класса.
         /// </summary>
         /// <param name="input">Выражение в инфиксной записи</param>
         /// <returns></returns>
-        public static double CalculateExpression(string input)
+        public static string CalculateExpression(string input)
         {
             var output = ConvertRPN(input); //Преобразование к ОПЗ
-            //output = OptimizeExpression(output); //Оптимизация выражения
-            double result = Evaluate(output);
+            var result = Evaluate(output);
             return result;
         }
 
-        public static double SolveEquotation(IEnumerable<string> input)
+        public static double SolveEquotation(IDictionary<string, ElementKind> input)
         {
             return 0;
         }
@@ -55,11 +57,10 @@ namespace MathLearn
         /// <param name="input">Выражение, записаннное в инфиксной нотации</param>
         /// <returns>Выражение, преобразованное к ОПЗ. Лексемы и операторы разделены пробелами</returns>
 
-        // public static IDictionary<string, ElementKind> ConvertRPN()
-        public static List<string> ConvertRPN(string input)
+        public static List<Expression> ConvertRPN(string input)
         {
             input = input.Replace(" ", "");
-            var output = new List<string>();
+            var output = new List<Expression>();
             var operatorStack = new Stack<char>();
             string lexem = string.Empty;
 
@@ -82,7 +83,7 @@ namespace MathLearn
                         i++;
                         if (i == input.Length) break;
                     }
-                    output.Add(lexem);
+                    output.Add(new Expression(lexem, ElementKind.Constant));
                     lexem = string.Empty;
                     i--;
                     continue;
@@ -114,9 +115,10 @@ namespace MathLearn
                         }
                         i++;
                         var inFuncExpression = Evaluate(ConvertRPN(temp));
-                        output.Add(inFuncExpression.ToString());
+                        output.Add(new Expression(inFuncExpression, ElementKind.Constant));
+                        output.Add(new Expression(lexem, ElementKind.Function));
                     }
-                    output.Add(lexem);
+                    else output.Add(new Variable(lexem, 1));
                     lexem = string.Empty;
                     i--;
                     continue;
@@ -132,112 +134,185 @@ namespace MathLearn
                         char s = operatorStack.Pop();
                         while (s != '(')
                         {
-                            output.Add(s.ToString());
+                            output.Add(new Expression(s.ToString(), ElementKind.Operator));
                             s = operatorStack.Pop();
                         }
                         break;
                     default:
                         while (operatorStack.Count > 0 && (GetPriority(input[i]) <= GetPriority(operatorStack.Peek())))
-                            output.Add(operatorStack.Pop().ToString());
+                            output.Add(new Expression(operatorStack.Pop().ToString(), ElementKind.Operator));
                         operatorStack.Push(input[i]);
                         break;
                 }
             }
             // После прохода по всей входной строке выталкиваем оставшиеся операторы из стека в выходную строку
             while (operatorStack.Count > 0)
-                output.Add(operatorStack.Pop().ToString());
+                output.Add(new Expression(operatorStack.Pop().ToString(), ElementKind.Operator));
             return output;
         }
 
-        private static string OptimizeExpression(IDictionary<string, ElementKind> input)
+        private static Stack<Expression> OptimizeExpression(IEnumerable<Expression> input)
         {
-            string output = "";
-            return output;
-        }
-        /// <summary>
-        /// Метод для вычисления значения выражения, преобразованного (и оптимизированного) к ОПЗ
-        /// </summary>
-        /// <param name="input">Выражение в ОПЗ</param>
-        /// <returns></returns>
-        private static double Evaluate(IEnumerable<string> input)
-        {
-            double result = 0;
-            var lexemStack = new Stack<string>();
-            foreach (string t in input)
+            var optimizedExpression = new Stack<Expression>();
+            foreach (var value in input)
             {
-                double tempd;
-                if (double.TryParse(t, out tempd))
-                    lexemStack.Push(t);
-                else if (IsFunction(t))
+                switch (value.ExpressionType)
                 {
-                    double a = double.Parse(lexemStack.Pop());
-                    switch (t)
-                    {
-                        case "sin":
-                            result = Math.Sin(a * Math.PI / 180);
-                            break;
-                        case "cos":
-                            result = Math.Cos(a * Math.PI / 180);
-                            break;
-                        case "sqrt":
-                            result = Math.Sqrt(a);
-                            break;
-                        case "tan":
-                            result = Math.Tan(a * Math.PI / 180);
-                            break;
-                        case "asin":
-                            result = Math.Asin(a);
-                            break;
-                        case "acos":
-                            result = Math.Acos(a);
-                            break;
-                        case "atan":
-                            result = Math.Atan(a);
-                            break;
-                        default:
-                            MessageBox.Show("Ошибка при обработке функции: функция неизвестна!");
-                            return double.NaN;
-                    }
-                    lexemStack.Push(result.ToString());
-                }
-
-                else if (IsOperator(char.Parse(t))) //Если оператор, вытащить из стека                                               
-                {                              //две последних лексемы и выполнить соответствующее действие
-                    double a = double.Parse(lexemStack.Pop());
-                    double b = double.Parse(lexemStack.Pop());
-                    switch (char.Parse(t))
-                    {
-                        case '+':
-                            result = b + a;
-                            break;
-                        case '-':
-                            result = b - a;
-                            break;
-                        case '*':
-                            result = b * a;
-                            break;
-                        case '/':
-                            result = b / a;
-                            break;
-                        case '^':
-                            result = Math.Pow(b, a);
-                            break;
-                    }
-                    lexemStack.Push(result.ToString()); //отправить результат операции в стек
+                    case ElementKind.Constant:
+                        optimizedExpression.Push(value);
+                        break;
+                    case ElementKind.Variable:
+                        optimizedExpression.Push(value);
+                        break;
+                    case ElementKind.Operator:
+                        var operandA = optimizedExpression.Pop();
+                        var operandB = optimizedExpression.Pop();
+                        if (IsVarOrVarExp(operandA) || IsVarOrVarExp(operandB))
+                        {
+                            var operands = new[] { operandA, operandB };
+                            var exprList = new List<Expression>();
+                            var exprBody = $"{operandA.ExpressionBody} {value.ExpressionBody} {operandB.ExpressionBody}";
+                            foreach (var expression in operands)
+                                switch (expression.ExpressionType)
+                                {
+                                    case ElementKind.Variable:
+                                        exprList.Add(expression);
+                                        break;
+                                    case ElementKind.VariableExpression:
+                                        exprList.AddRange(((VariableExpression)expression).ExpressionsList);
+                                        break;
+                                }
+                            CompressExpression(new VariableExpression(exprBody, exprList));
+                        }
+                        else optimizedExpression.Push(new Expression(
+                            OperatorEval(value.ExpressionBody[0],
+                                double.Parse(operandA.ExpressionBody), double.Parse(operandB.ExpressionBody)).ToString(),
+                                    ElementKind.Constant));
+                        break;
+                    case ElementKind.Function:
+                        double result;
+                        var funcOperandA = double.Parse(optimizedExpression.Pop().ExpressionBody);
+                        if (value.ExpressionBody == "^")
+                        {
+                            var powerBase = double.Parse(optimizedExpression.Pop().ExpressionBody);
+                            result = FunctionEval(value.ExpressionBody, funcOperandA, powerBase);
+                        }
+                        else result = FunctionEval(value.ExpressionBody, funcOperandA);
+                        optimizedExpression.Push(new Expression(result.ToString(), ElementKind.Constant));
+                        break;
+                    case ElementKind.VariableExpression:
+                        CompressExpression(value as VariableExpression);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
-            return Math.Round(double.Parse(lexemStack.Peek()), 3);
+            return optimizedExpression;
         }
 
-        /// <summary>
-        /// Метод для преобразования десятичной запятой в точку.
-        /// </summary>
-        /// <param name="c">Символ десятичной запятой</param>
+        private static void CompressExpression(VariableExpression expression)
+        {
+
+        }
+
+        private static string Evaluate(IEnumerable<Expression> input)
+        {
+            var lexemStack = new Stack<Expression>();
+            foreach (var t in input)
+            {
+                double result;
+                switch (t.ExpressionType)
+                {
+                    case ElementKind.Constant:
+                        lexemStack.Push(t);
+                        break;
+                    case ElementKind.Function:
+                        var a = double.Parse(lexemStack.Pop().ExpressionBody);
+                        if (t.ExpressionBody == "^")
+                        {
+                            var powerBase = double.Parse(lexemStack.Pop().ExpressionBody);
+                            result = FunctionEval(t.ExpressionBody, a, powerBase);
+                        }
+                        else result = FunctionEval(t.ExpressionBody, a);
+                        lexemStack.Push(new Expression(result.ToString(), ElementKind.Constant));
+                        break;
+                    case ElementKind.Operator:
+                        a = double.Parse(lexemStack.Pop().ExpressionBody);
+                        var b = double.Parse(lexemStack.Pop().ExpressionBody);
+                        result = OperatorEval(t.ExpressionBody[0], a, b);
+                        lexemStack.Push(new Expression(result.ToString(), ElementKind.Constant));
+                        break;
+                }
+            }
+            return lexemStack.Peek().ExpressionBody;
+        }
+
+        private static double OperatorEval(char oper, double a, double b)
+        {
+            double result;
+            switch (oper)
+            {
+                case '+':
+                    result = b + a;
+                    break;
+                case '-':
+                    result = b - a;
+                    break;
+                case '*':
+                    result = b * a;
+                    break;
+                case '/':
+                    result = b / a;
+                    break;
+                default:
+                    MessageBox.Show("Ошибка при обработке оператора: оператор неизвестен!");
+                    return double.NaN;
+            }
+            return result;
+        }
+
+        private static double FunctionEval(string func, double a, double b = 0)
+        {
+            double result;
+            switch (func)
+            {
+                case "sin":
+                    result = Math.Sin(a * Math.PI / 180);
+                    break;
+                case "cos":
+                    result = Math.Cos(a * Math.PI / 180);
+                    break;
+                case "sqrt":
+                    result = Math.Sqrt(a);
+                    break;
+                case "tan":
+                    result = Math.Tan(a * Math.PI / 180);
+                    break;
+                case "asin":
+                    result = Math.Asin(a);
+                    break;
+                case "acos":
+                    result = Math.Acos(a);
+                    break;
+                case "atan":
+                    result = Math.Atan(a);
+                    break;
+                case "^":
+                    result = Math.Pow(b, a);
+                    break;
+                default:
+                    MessageBox.Show("Ошибка при обработке функции: функция неизвестна!");
+                    return double.NaN;
+            }
+            return result;
+        }
+
         private static void IsDecimalDelimiter(ref char c)
         {
             if (".".IndexOf(c) == 0)
                 c = ',';
         }
+
         /// <summary>
         /// Метод, определяющий, является ли текущий символ разделителем (пробелом или знаком "=")
         /// </summary>
@@ -247,6 +322,12 @@ namespace MathLearn
         {
             return " =".IndexOf(c) != -1;
         }
+
+        private static bool IsVarOrVarExp(Expression operand)
+        {
+            return operand.ExpressionType == ElementKind.Variable ||
+                operand.ExpressionType == ElementKind.VariableExpression;
+        }
         /// <summary>
         /// Метод, определяющий, является ли текущий символ оператором.
         /// </summary>
@@ -254,8 +335,9 @@ namespace MathLearn
         /// <returns></returns>
         private static bool IsOperator(char c)
         {
-            return "+-/*()^".IndexOf(c) != -1;
+            return "+-/*()".IndexOf(c) != -1;
         }
+
         /// <summary>
         /// Метод, определяющий приоритет математической операции, выражаемой текущим оператором
         /// </summary>
@@ -265,15 +347,26 @@ namespace MathLearn
         {
             switch (oper)
             {
-                case '(': return 1;
-                case ')': return 1;
-                case '+': return 2;
-                case '-': return 2;
-                case '*': return 3;
-                case '/': return 3;
-                case '^': return 4;
-                default: return 5;
+                case '(':
+                    return 1;
+                case ')':
+                    return 1;
+                case '+':
+                    return 2;
+                case '-':
+                    return 2;
+                case '*':
+                    return 3;
+                case '/':
+                    return 3;
+                default:
+                    return 4;
             }
+        }
+
+        private static bool OperatorOfGroup(char oper)
+        {
+            return "*/".IndexOf(oper) != -1;
         }
 
         private static bool IsFunction(string func)

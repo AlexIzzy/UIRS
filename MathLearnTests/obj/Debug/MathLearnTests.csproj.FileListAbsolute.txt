@@ -5,3 +5,5 @@ D:\Git\UIRS\MathLearnTests\bin\Debug\ru\Microsoft.VisualStudio.QualityTools.Unit
 D:\Git\UIRS\MathLearnTests\obj\Debug\MathLearnTests.csprojResolveAssemblyReference.cache
 D:\Git\UIRS\MathLearnTests\obj\Debug\MathLearnTests.dll
 D:\Git\UIRS\MathLearnTests\obj\Debug\MathLearnTests.pdb
+D:\Git\UIRS\MathLearnTests\bin\Debug\MathLearn.exe
+D:\Git\UIRS\MathLearnTests\bin\Debug\MathLearn.pdb
